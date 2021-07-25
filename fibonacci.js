@@ -12,7 +12,7 @@ console.log(fib(8)); // 21
 
 
 // memo way
-const fib = (n, memo = null) => {
+const fibWithMemo = (n, memo = null) => {
     memo = memo || {};
     if (memo[n]) {
         return memo[n];
@@ -22,6 +22,6 @@ const fib = (n, memo = null) => {
         return n;
     }
 
-    return (memo[n] = fib(n - 1, memo) + fib(n - 2, memo));
+    return (memo[n] = fibWithMemo(n - 1, memo) + fibWithMemo(n - 2, memo));
 };
-console.log(fib(8)); // 21
+console.log(fibWithMemo(8)); // 21
