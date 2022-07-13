@@ -53,4 +53,4 @@ const input = {
   },
 };
 
-console.log(bfs(input, 22)); // 0 -> 6 -> 7 -> 5 -> 4 -> 3 -> 2
+console.log(bfs(input)); // 0 -> 6 -> 7 -> 5 -> 4 -> 3 -> 2
