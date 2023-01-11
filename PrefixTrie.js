@@ -60,34 +60,75 @@ class Trie {
         }
     }
 
-    printWords() {
+    iterateNodes() {
         if (this.isEmpty()) {
             return;
         }
-        let words = new Set();
-        function DFS(node, str) {
-            // key - value
-            for (let [char, trieNode] of node) {
-                if (char === '*') {
-                    words.add(trieNode)
-                } else {
-                    DFS(trieNode, str + char);
+
+        let queue = [this.root];
+        while (queue.length > 0) {
+            let node = queue.shift();
+
+            console.log(node);
+
+            if (node.size === 1) {
+                for (let value of node.values()) {
+                    queue.push(value);
                 }
             }
         }
-        DFS(this.root, "");
-        return words;
     }
 }
 
-
-const trie = new Trie()
-trie.addWord('the')
-console.log(trie.findWord('there'))
-trie.addWord('then')
-console.log(trie.findWord('then'))
-trie.addWord('bigo')
-console.log(trie.findWord('the'))
-trie.addWord('there')
-console.log(trie.printWords())
+// const trie = new Trie()
+// trie.addWord('the')
+// console.log(trie.findWord('there'))
+// trie.addWord('then')
+// console.log(trie.findWord('then'))
+// trie.addWord('bigo')
+// console.log(trie.findWord('the'))
+// trie.addWord('there')
+// console.log(trie.printWords())
 // console.log(trie)
+
+function longestCommonPrefix(words) {
+    if (!Array.isArray(words) || words.length === 0) {
+        return "";
+    }
+
+    let emptyStringIndex = words.findIndex((word) => word === "");
+    if (emptyStringIndex >= 0) {
+        return "";
+    }
+
+    words = words.filter((word) => word.length > 0); // Filter out empty strings
+    if (!words.length) {
+        return "";
+    }
+    if (words.length === 1) {
+        return words[0];
+    }
+
+    let trie = new Trie();
+    for (let word of words) {
+        trie.addWord(word);
+    }
+    let commonPrefix = "";
+    let current = trie.root;
+    while (current.size === 1 && !current.endSymbol) {
+        for (let key of current.keys()) {
+            if (key !== trie.endSymbol) {
+                commonPrefix += key;
+            }
+
+            current = current.get(key); // move to next child
+        }
+    }
+    return commonPrefix;
+}
+
+console.log(longestCommonPrefix(["car", "cir"])); // => c
+console.log(longestCommonPrefix([""])); // => ''
+console.log(longestCommonPrefix(["a"])); // => a
+console.log(longestCommonPrefix(["", "b"])); // => ''
+console.log(longestCommonPrefix(["flower","flower","flower","flower"])) // => 'flower'
